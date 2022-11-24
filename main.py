@@ -1,5 +1,7 @@
 from random_word import RandomWords
 import requests, json
+from flask import Flask
+app = Flask(__name__)
 
 r = RandomWords()
 
@@ -9,7 +11,6 @@ def find_word_meaning(word):
   try:
     return meaning_list['list'][0]['definition']
   except Exception as ex:
-    print(ex)
     return False
   
 def find_word():
@@ -19,5 +20,9 @@ def find_word():
     return find_word()
   return word, meaning
 
+@app.route('/')
+def index():
+   return jsonify(find_word())
+
 if __name__=="__main__":
-  print(find_word())
+  app.run()
